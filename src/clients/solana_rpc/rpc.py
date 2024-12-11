@@ -9,6 +9,7 @@ from solders.hash import Hash
 
 from clients.base.client import BaseHTTPClient
 
+
 class SolanaRPC(BaseHTTPClient):
     def __init__(self, rpc_url: str, commitment: Commitment = Confirmed):
         self.url = rpc_url
@@ -24,3 +25,4 @@ class SolanaRPC(BaseHTTPClient):
     async def custom_rpc_call(self, method: str, params: List[Any]):
         payload = {"method": method, "params": params, "jsonrpc": "2.0", "id": "jupiter-swap"}
         return await self._post(self.url, json.dumps(payload), debug=True)
+
