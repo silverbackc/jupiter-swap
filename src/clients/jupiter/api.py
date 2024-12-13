@@ -21,20 +21,20 @@ class JupiterApi(BaseHTTPClient):
         return data
     
     async def get_tx_data(self, route: Dict, sender: str):
-        swap_params = {
-            "quoteResponse": route,
-            "userPublicKey": sender,
-            "wrapAndUnwrapSol": True,
-            "dynamicComputeUnitLimit": True,
-        }
-
-        swap_instr_resp = await self._post(
-            f"{JUPITER_URL}/swap-instructions",
-            data=swap_params,
-        )
         try:
+            swap_params = {
+                "quoteResponse": route,
+                "userPublicKey": sender,
+                "wrapAndUnwrapSol": True,
+                "dynamicComputeUnitLimit": True,
+            }
+
+            swap_instr_resp = await self._post(
+                f"{JUPITER_URL}/swap-instructions",
+                data=swap_params,
+            )
+            print(type(swap_instr_resp))
             tx_data = SwapInstructions(**swap_instr_resp)
-            log.info(f"computeBudgetInstructions: {tx_data.computeUnitLimit}")
             log.info(f"prioritizationFeeLamports: {tx_data.prioritizationFeeLamports}")
             return tx_data
         except ValidationError as v_e:
